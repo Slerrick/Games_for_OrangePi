@@ -74,5 +74,5 @@ ARRAY_GPIO = [NUM_0,NUM_1,NUM_2,NUM_3,NUM_4];
 for Num in ARRAY_GPIO:
     wiringpi.pinMode(Num, GPIO.INPUT);
     print(wiringpi.digitalRead(Num));
-   
+p = input("F")
 sys.exit(0)
