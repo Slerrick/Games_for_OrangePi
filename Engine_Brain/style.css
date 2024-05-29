@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     font-size: 0;
+    text-wrap: nowrap;
+    color: rgb(60, 60, 60);
     display: flex;
     flex-direction: column;
 }
@@ -40,23 +42,43 @@ section {
 /* h1 styles */
 
 h1 {
-    font-size: 20vmin;
+    font-size: 15vmin;
     font-family: monospace;
 }
 
-/* Box styles */
+/* h2 styles */
+
+h2 {
+    font-size: 10vmin;
+    font-family: monospace;
+}
+
+/* h3 styles */
+
+h3 {
+    font-size: 6vmin;
+    font-family: monospace;
+}
+
+/* Boxes styles */
 
 .Box {
     width: 30%;
-    height: 20vh;
+    height: 40%;
     margin: auto;
+    text-align: center;
+    justify-content: center;
     box-shadow: 5px 5px 3px black;
     border-radius: 1.5vmin;
     background-color: rgb(0, 154, 99);
 }
+.Box-2{
+    background-color: rgb(112, 130, 97);
+}
 
-
-
+footer{
+    margin-top: 5vh;
+}
 
 ::-webkit-scrollbar {
     width: .5vmin;
