@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("Counter_var_sker", "0");
     }
     // Initializing HTML elements
+    var Button_Easy = document.getElementById("easy");
+    var Button_Hard = document.getElementById("hard");
     var Box1 = document.getElementById("B1");
     var Box2 = document.getElementById("B2");
     var Box3 = document.getElementById("B3");
@@ -102,9 +104,9 @@ document.addEventListener("DOMContentLoaded", function () {
     counter.textContent = "\u0412\u0430\u0448 \u0441\u0447\u0435\u0442:".concat(localStorage.getItem("Counter_var_sker"));
     //Start examples
     Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100;
-    var Infinity = setInterval(function () { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer); }, Speed_Of_Game);
+    var Infinity_Game = setInterval(function () { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer); }, Speed_Of_Game);
     var One_click_block = setInterval(function () { One_click = 1; }, Speed_Of_Game);
-    var Save_Counter_var = setInterval(function () { localStorage.setItem("Counter_var_sker", "".concat(Counter_var)); }, Speed_Of_Game * 2);
+    var Save_Counter_var = setInterval(function () { localStorage.setItem("Counter_var_sker", "".concat(Counter_var)); }, 4000);
     // Creating a button and counter function
     var B11 = function (number_box) {
         if (HTMLElements_BOXES[number_box].textContent == "".concat(Check_Answer) && One_click == 1) {
@@ -129,5 +131,40 @@ document.addEventListener("DOMContentLoaded", function () {
     Box2_div.addEventListener("click", function () { return B11(1); });
     Box3_div.addEventListener("click", function () { return B11(2); });
     Button_1.addEventListener("click", function () { return Reset(); });
+    //Buttons logic
+    var Is_easy = true;
+    var Is_hard = false;
+    Button_Easy.addEventListener("click", function () {
+        Button_Easy.style.backgroundColor = 'rgba(16, 156, 60, 0.5)';
+        Button_Hard.style.backgroundColor = 'rgba(6, 56, 30, 0.1)';
+        Is_hard = false;
+        Is_easy = true;
+        Level_Of_Game(true);
+    });
+    Button_Hard.addEventListener("click", function () {
+        Button_Hard.style.backgroundColor = 'rgba(16, 156, 60, 0.5)';
+        Button_Easy.style.backgroundColor = 'rgba(6, 56, 30, 0.1)';
+        Is_easy = false;
+        Is_hard = true;
+        Level_Of_Game(false);
+    });
+    var Level_Of_Game = function (easy) {
+        if (easy) {
+            clearInterval(Infinity_Game);
+            clearInterval(One_click_block);
+            Speed_Of_Game = 3900;
+            Math_Operations_Array = ["-", "+", "/", "*"];
+            Infinity_Game = setInterval(function () { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer); }, Speed_Of_Game);
+            One_click_block = setInterval(function () { One_click = 1; }, Speed_Of_Game);
+        }
+        else {
+            clearInterval(Infinity_Game);
+            clearInterval(One_click_block);
+            Speed_Of_Game = 2000;
+            Math_Operations_Array = ["/", "*"];
+            Infinity_Game = setInterval(function () { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer); }, Speed_Of_Game);
+            One_click_block = setInterval(function () { One_click = 1; }, Speed_Of_Game);
+        }
+    };
 });
 //END

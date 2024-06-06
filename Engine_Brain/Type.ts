@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Initializing HTML elements
+  const Button_Easy = document.getElementById("easy") as HTMLElement;
+  const Button_Hard = document.getElementById("hard") as HTMLElement;
   const Box1 = document.getElementById("B1") as HTMLElement;
   const Box2 = document.getElementById("B2") as HTMLElement;
   const Box3 = document.getElementById("B3") as HTMLElement;
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const Button_1 = document.getElementById("But-1") as HTMLElement;
 
   // Creating a function that will generate examples and the correct answer
-  const Math_Operations_Array: string[] = ["-", "+", "/", "*"];
+  let Math_Operations_Array: string[] = ["-", "+", "/", "*"];
 
   const create_Examples = (mArr: string[]): string[] => {
 
@@ -105,9 +107,9 @@ document.addEventListener("DOMContentLoaded", function () {
   //Start examples
   Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100;
 
-  const Infinity = setInterval(() => { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer) }, Speed_Of_Game);
-  const One_click_block = setInterval(() => { One_click = 1 }, Speed_Of_Game);
-  const Save_Counter_var = setInterval(() => { localStorage.setItem("Counter_var_sker", `${Counter_var}`) }, Speed_Of_Game * 2);
+  let Infinity_Game = setInterval(() => { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer) }, Speed_Of_Game);
+  let One_click_block = setInterval(() => { One_click = 1 }, Speed_Of_Game);
+  const Save_Counter_var = setInterval(() => { localStorage.setItem("Counter_var_sker", `${Counter_var}`) }, 4000);
 
   // Creating a button and counter function
   const B11 = (number_box: number): void | any => {
@@ -136,6 +138,53 @@ document.addEventListener("DOMContentLoaded", function () {
   Box3_div.addEventListener("click", () => B11(2));
 
   Button_1.addEventListener("click", () => Reset());
+  
 
+  //Buttons logic
+  let Is_easy: boolean = true;
+  let Is_hard: boolean = false;
+
+  Button_Easy.addEventListener("click", () =>{
+
+      Button_Easy.style.backgroundColor = 'rgba(16, 156, 60, 0.5)';
+      Button_Hard.style.backgroundColor = 'rgba(6, 56, 30, 0.1)';
+
+      Is_hard = false
+      Is_easy = true
+
+      Level_Of_Game(true)
+  })
+  Button_Hard.addEventListener("click", () =>{
+
+      Button_Hard.style.backgroundColor = 'rgba(16, 156, 60, 0.5)';
+      Button_Easy.style.backgroundColor = 'rgba(6, 56, 30, 0.1)';
+
+      Is_easy = false
+      Is_hard = true
+
+      Level_Of_Game(false)
+  })
+
+  const Level_Of_Game = (easy: boolean) => {
+    if (easy){
+    clearInterval(Infinity_Game);
+    clearInterval(One_click_block);
+
+    Speed_Of_Game = 3900;
+    Math_Operations_Array = ["-", "+", "/", "*"];
+
+    Infinity_Game = setInterval(() => { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer) }, Speed_Of_Game);
+    One_click_block = setInterval(() => { One_click = 1 }, Speed_Of_Game);
+    }else{
+    clearInterval(Infinity_Game);
+    clearInterval(One_click_block);
+
+    Speed_Of_Game = 2000;
+    Math_Operations_Array = ["/", "*"];
+
+    Infinity_Game = setInterval(() => { Check_Answer = Math.round(three_Var_for_Answer() * 100) / 100; console.log(Check_Answer) }, Speed_Of_Game);
+    One_click_block = setInterval(() => { One_click = 1 }, Speed_Of_Game);
+    }
+  }
 });
 //END
