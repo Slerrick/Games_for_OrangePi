@@ -12,7 +12,7 @@ NUM_4 = 16 #orange / 26 pin
 
 #INIT wiringPI
 wiringpi.wiringPiSetup();
-wiringpi.serwarhing = False;
+wiringpi.seewarhing = False;
 
 #Set all in OUT
 ARRAY_GPIO = [NUM_0,NUM_1,NUM_2,NUM_3,NUM_4];
