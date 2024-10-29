@@ -1,7 +1,7 @@
 import      sqlite3        as sqlite
 import      hashlib        as hash
 import      os
-from        common         import  date, UserTable, ADMIN_KEY, BOT, Back_Button
+from        common         import  date, time, UserTable, ADMIN_KEY, BOT, Back_Button
 #Connect to sql databases
 name_user = None
 
@@ -129,6 +129,23 @@ def delete_account(message, additional_arg):
     else:
         BOT.send_message(message.chat.id, "Отмена операции.")
 
+def set_skm_user(message, amount, user_id):
+    try:
+        with sqlite.connect("./DATA.DB") as SQL:
+            CURSOR = SQL.cursor()
+            CURSOR.execute('''
+                UPDATE users
+                SET balance = balance + ?
+                WHERE id = ?''', (amount, user_id,))
+            CURSOR.execute('''
+                SELECT * FROM users
+                WHERE id = ?''', (user_id,))
+            data = CURSOR.fetchone()
+            if data is None:
+                return BOT.send_message(message.chat.id, "Для пополнения баланса нужно зарегистрироваться в этом боте!")
+            return BOT.send_message(message.chat.id, "Успешно!")
+    except Exception as e:
+        print(e)
 #GET all from DATABASE
 
 def List_users():
@@ -199,7 +216,6 @@ def Enter_user(message, additional_arg):
             BOT.send_message(message.chat.id, "Вход выполнен!")
             print("Аутентификация прошла успешно!")
 
-            # Обновление последнего входа
             CURSOR.execute('''
                 UPDATE users
                 SET lastseen = ?

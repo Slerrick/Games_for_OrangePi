@@ -1,14 +1,13 @@
 ######################
 import Info_sys
 import My_sqlite3     as        sql3
-from   common         import    BOT, PAYMENT_TOKEN, ty, dt, pl, Back_Button
+from   common         import    BOT, PAYMENT_TOKEN, BUTTON_BACK, ty, dt, pl, time
 #File common is private, create his.
 from   My_sqlite3     import    session_id_admins
 from   clean_DB       import    clear_admins, delete_inactive_accounts
 ######################
 import threading
-import json
-import time 
+import json 
 
 
 
@@ -31,10 +30,10 @@ def check_admins(id):
     #RUN IN THE END OF PROGRAM
 HELLO_TEXT = """
 Твой единомышленник в мире программирования!
-Этот бот постарается помочь разобраться в программировании вместе с джуном(сам разбирается не очень)   :) 
-•📚Полезные статьи: Изучайте статьи на актуальные темы, от основ до продвинутых техник (Type/Java Script; Python).
-•💡Собственные проекты: Узнай о наших проектах и почерпни вдохновение для собственных, помогай решать проблемы и исправляй свои!
-•🛒Магазин: Скоро здесь появятся интересные товары для программистов и не только..."""
+Этот бот постарается помочь разобраться начальном освоении программирования   :) 
+•📚Полезные статьи: Изучай статьи на актуальные темы (Type/Java Script; Python).
+•💡Проекты: Узнай о проектах и почерпни вдохновение для собственных, помогай решать проблемы и исправляй свои!
+•🛒Магазин: Покупай SKM для внутренних товаров..."""
 FIB_TEXT = """import timeit
 def fibonacci_iterative(n):
     a, b = 0, 1
@@ -81,12 +80,21 @@ def Registration(message):
 ################################
 KEY_SHOP = ty.ReplyKeyboardMarkup(resize_keyboard=True)
 button = ty.KeyboardButton(
-text="Открыть веб-приложение",web_app=ty.WebAppInfo(url="https://slerrick.github.io/Telegram_Bot_webApp/"))
+text="Открыть веб-приложение", web_app=ty.WebAppInfo(url="https://slerrick.github.io/Telegram_Bot_webApp/"))
 KEY_SHOP.add(button)
+KEY_SHOP.add(BUTTON_BACK)
 ################################
 def send_shop_price(message):
     BOT.send_message(message.chat.id, "Нажмите на кнопку, чтобы открыть веб-приложение(10 секунд):", reply_markup=KEY_SHOP)
-
+################################
+KEY_CHOSEN = ty.ReplyKeyboardMarkup(resize_keyboard=True)
+button_programm = ty.KeyboardButton("Программы")
+button_learn = ty.KeyboardButton("Материалы для изучения")
+button_hard = ty.KeyboardButton("Железо")
+button_other = ty.KeyboardButton("Прочее")
+KEY_CHOSEN.row(button_programm, button_learn)
+KEY_CHOSEN.row(button_hard, button_other)
+KEY_CHOSEN.add(BUTTON_BACK)
 def payment(message):
     BOT.send_invoice(
         message.chat.id,
@@ -147,7 +155,10 @@ def Success(message: ty.Message):
 @BOT.message_handler(content_types=["web_app_data"])
 def json_web(message: ty.Message):
     res = json.loads(message.web_app_data.data)
-    BOT.send_message(message.chat.id, res["amount"])
+    KEY_GET_SKM = ty.InlineKeyboardMarkup()
+    button_money = ty.InlineKeyboardButton("Получить на счет", callback_data=str(res['amount']))
+    KEY_GET_SKM.add(button_money)
+    BOT.send_message(message.chat.id, f"Пополнение баланса на {res['amount']}", reply_markup=KEY_GET_SKM)
 ####################################
 @BOT.message_handler(commands=["admin"])
 def Admin(message: ty.Message):
@@ -183,9 +194,8 @@ def on_click(message: ty.Message):
         Menu(message)
     elif message.text == "Магазин":
         send_shop_price(message)
-        #payment(message)
-        time.sleep(10)
-        Back_Button(message)
+    elif message.text == "Категории":
+        BOT.send_message(message.chat.id, "👾", reply_markup=KEY_CHOSEN)
 
 
 
@@ -216,6 +226,8 @@ def Call_BOT(call: ty.CallbackQuery):
     if call.data == "info":
         BOT.send_message(messages.chat.id, sql3.create_table(messages, user_id), parse_mode="html")
         BOT.answer_callback_query(call.id)
+    if call.data in ["5200", "8000", "10000", "15000"]:
+        sql3.set_skm_user(messages, int(call.data), user_id)
 
 #END_PROGRAM
 threading.Thread(target=check_time).start()
