@@ -6,7 +6,7 @@ import time
 from   datetime              import    datetime       as    dt
 import Info_sys
 
-BOT_TOKEN = '7399585156:AAHZ1p219hn2agQ79qbULlcOwNtqTzCeJu4'  # Замените своим токеном
+BOT_TOKEN = '7399585156:AAHBYJ045jrI_dgQYIXOhyus4jo3VwLcKJI'  # Замените своим токеном
 CHAT_ID = '5155181543'  # Замените на ID чата или пользователя
 
 # Пример сообщении, которые будут отправлены
